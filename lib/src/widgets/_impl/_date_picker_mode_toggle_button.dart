@@ -25,13 +25,10 @@ class _DatePickerModeToggleButton extends StatefulWidget {
   final CalendarDatePicker2Config config;
 
   @override
-  _DatePickerModeToggleButtonState createState() =>
-      _DatePickerModeToggleButtonState();
+  _DatePickerModeToggleButtonState createState() => _DatePickerModeToggleButtonState();
 }
 
-class _DatePickerModeToggleButtonState
-    extends State<_DatePickerModeToggleButton>
-    with SingleTickerProviderStateMixin {
+class _DatePickerModeToggleButtonState extends State<_DatePickerModeToggleButton> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -61,80 +58,27 @@ class _DatePickerModeToggleButtonState
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final Color controlColor = colorScheme.onSurface.withOpacity(0.60);
-    var datePickerOffsetPadding = _monthNavButtonsWidth;
-    if (widget.config.centerAlignModePicker == true) {
-      datePickerOffsetPadding /= 2;
-    }
-
     return Container(
-      padding: widget.config.centerAlignModePicker == true
-          ? EdgeInsets.zero
-          : const EdgeInsetsDirectional.only(start: 16, end: 4),
       height: (widget.config.controlsHeight ?? _subHeaderHeight),
-      child: Row(
-        children: <Widget>[
-          if (widget.mode == DatePickerMode.day &&
-              widget.config.centerAlignModePicker == true)
-            // Give space for the prev/next month buttons that are underneath this row
-            SizedBox(width: datePickerOffsetPadding),
-          Flexible(
-            child: Semantics(
-              label: MaterialLocalizations.of(context).selectYearSemanticsLabel,
-              excludeSemantics: true,
-              button: true,
-              child: SizedBox(
-                height: (widget.config.controlsHeight ?? _subHeaderHeight),
-                child: InkWell(
-                  onTap: widget.config.disableModePicker == true
-                      ? null
-                      : widget.onTitlePressed,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: widget.config.centerAlignModePicker == true
-                            ? 0
-                            : 8),
-                    child: Row(
-                      mainAxisAlignment:
-                          widget.config.centerAlignModePicker == true
-                              ? MainAxisAlignment.center
-                              : MainAxisAlignment.start,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            widget.title,
-                            overflow: TextOverflow.ellipsis,
-                            style: widget.config.controlsTextStyle ??
-                                textTheme.titleSmall?.copyWith(
-                                  color: controlColor,
-                                ),
-                          ),
-                        ),
-                        widget.config.disableModePicker == true
-                            ? const SizedBox()
-                            : RotationTransition(
-                                turns: _controller,
-                                child: widget.config.customModePickerIcon ??
-                                    Icon(
-                                      Icons.arrow_drop_down,
-                                      color: widget.config.controlsTextStyle
-                                              ?.color ??
-                                          controlColor,
-                                    ),
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+      alignment: Alignment.center,
+      child: Semantics(
+        label: MaterialLocalizations.of(context).selectYearSemanticsLabel,
+        excludeSemantics: true,
+        button: true,
+        child: SizedBox(
+          width: 250,
+          height: (widget.config.controlsHeight ?? _subHeaderHeight),
+          child: InkWell(
+            onTap: widget.config.disableModePicker == true ? null : widget.onTitlePressed,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(widget.title,
+                    overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+              ],
             ),
           ),
-          if (widget.mode == DatePickerMode.day)
-            // Give space for the prev/next month buttons that are underneath this row
-            SizedBox(width: datePickerOffsetPadding),
-        ],
+        ),
       ),
     );
   }

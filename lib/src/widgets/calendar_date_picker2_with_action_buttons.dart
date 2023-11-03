@@ -30,12 +30,10 @@ class CalendarDatePicker2WithActionButtons extends StatefulWidget {
   final Function? onOkTapped;
 
   @override
-  State<CalendarDatePicker2WithActionButtons> createState() =>
-      _CalendarDatePicker2WithActionButtonsState();
+  State<CalendarDatePicker2WithActionButtons> createState() => _CalendarDatePicker2WithActionButtonsState();
 }
 
-class _CalendarDatePicker2WithActionButtonsState
-    extends State<CalendarDatePicker2WithActionButtons> {
+class _CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker2WithActionButtons> {
   List<DateTime?> _values = [];
   List<DateTime?> _editCache = [];
 
@@ -47,8 +45,7 @@ class _CalendarDatePicker2WithActionButtonsState
   }
 
   @override
-  void didUpdateWidget(
-      covariant CalendarDatePicker2WithActionButtons oldWidget) {
+  void didUpdateWidget(covariant CalendarDatePicker2WithActionButtons oldWidget) {
     var isValueSame = oldWidget.value.length == widget.value.length;
 
     if (isValueSame) {
@@ -72,14 +69,14 @@ class _CalendarDatePicker2WithActionButtonsState
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         MediaQuery.removePadding(
           context: context,
           child: CalendarDatePicker2(
+            arrowColro: const Color.fromRGBO(183, 84, 0, 1),
             value: [..._editCache],
             config: widget.config,
             onValueChanged: (values) => _editCache = values,
@@ -100,28 +97,24 @@ class _CalendarDatePicker2WithActionButtonsState
     );
   }
 
-  Widget _buildCancelButton(
-      ColorScheme colorScheme, MaterialLocalizations localizations) {
+  Widget _buildCancelButton(ColorScheme colorScheme, MaterialLocalizations localizations) {
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
         _editCache = _values;
         widget.onCancelTapped?.call();
-        if ((widget.config.openedFromDialog ?? false) &&
-            (widget.config.closeDialogOnCancelTapped ?? true)) {
+        if ((widget.config.openedFromDialog ?? false) && (widget.config.closeDialogOnCancelTapped ?? true)) {
           Navigator.pop(context);
         }
       }),
       child: Container(
-        padding: widget.config.buttonPadding ??
-            const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: widget.config.buttonPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: widget.config.cancelButton ??
             Text(
               localizations.cancelButtonLabel.toUpperCase(),
               style: widget.config.cancelButtonTextStyle ??
                   TextStyle(
-                    color: widget.config.selectedDayHighlightColor ??
-                        colorScheme.primary,
+                    color: widget.config.selectedDayHighlightColor ?? colorScheme.primary,
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
@@ -130,29 +123,25 @@ class _CalendarDatePicker2WithActionButtonsState
     );
   }
 
-  Widget _buildOkButton(
-      ColorScheme colorScheme, MaterialLocalizations localizations) {
+  Widget _buildOkButton(ColorScheme colorScheme, MaterialLocalizations localizations) {
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
         _values = _editCache;
         widget.onValueChanged?.call(_values);
         widget.onOkTapped?.call();
-        if ((widget.config.openedFromDialog ?? false) &&
-            (widget.config.closeDialogOnOkTapped ?? true)) {
+        if ((widget.config.openedFromDialog ?? false) && (widget.config.closeDialogOnOkTapped ?? true)) {
           Navigator.pop(context, _values);
         }
       }),
       child: Container(
-        padding: widget.config.buttonPadding ??
-            const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: widget.config.buttonPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: widget.config.okButton ??
             Text(
               localizations.okButtonLabel.toUpperCase(),
               style: widget.config.okButtonTextStyle ??
                   TextStyle(
-                    color: widget.config.selectedDayHighlightColor ??
-                        colorScheme.primary,
+                    color: widget.config.selectedDayHighlightColor ?? colorScheme.primary,
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
