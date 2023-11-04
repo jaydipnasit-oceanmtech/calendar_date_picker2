@@ -1,7 +1,3 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:math' as math;
 
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -37,8 +33,6 @@ class CalendarDatePicker2 extends StatefulWidget {
     this.onValueChanged,
     this.displayedMonthDate,
     this.onDisplayedMonthChanged,
-    this.arrowColro,
-    this.theamColor,
     Key? key,
   }) : super(key: key) {
     const valid = true;
@@ -62,19 +56,12 @@ class CalendarDatePicker2 extends StatefulWidget {
 
   final CalendarDatePicker2Config config;
 
-  /// The selected [DateTime]s that the picker should display.
   final List<DateTime?> value;
 
-  final Color? arrowColro;
-  final Color? theamColor;
-
-  /// Called when the selected dates changed
   final ValueChanged<List<DateTime?>>? onValueChanged;
 
-  /// Date to control calendar displayed month
   final DateTime? displayedMonthDate;
 
-  /// Called when the displayed month changed
   final ValueChanged<DateTime>? onDisplayedMonthChanged;
 
   @override
@@ -231,15 +218,6 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
           selectedDates = [value];
           break;
 
-        // case CalendarDatePicker2Type.multi:
-        //   final index = selectedDates.indexWhere((d) => DateUtils.isSameDay(d, value));
-        //   if (index != -1) {
-        //     selectedDates.removeAt(index);
-        //   } else {
-        //     selectedDates.add(value);
-        //   }
-        //   break;
-
         case CalendarDatePicker2Type.range:
           if (selectedDates.isEmpty) {
             selectedDates.add(value);
@@ -286,7 +264,6 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
           selectedDates: _selectedDates,
           onChanged: _handleDayChanged,
           onDisplayedMonthChanged: _handleMonthChanged,
-          // arrowColor: widget.arrowColro ?? const Color.fromRGBO(183, 84, 0, 1),
         );
       case DatePickerMode.year:
         return Padding(
@@ -313,14 +290,12 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
           height: (widget.config.controlsHeight ?? _subHeaderHeight) + _maxDayPickerHeight,
           child: _buildPicker(),
         ),
-        // Put the mode toggle button on top so that it won't be covered up by the _CalendarView
         _DatePickerModeToggleButton(
           config: widget.config,
           mode: _mode,
           title: widget.config.modePickerTextHandler?.call(monthDate: _currentDisplayedMonthDate) ??
               _localizations.formatMonthYear(_currentDisplayedMonthDate),
           onTitlePressed: () {
-            // Toggle the day/year mode.
             _handleModeChanged(_mode == DatePickerMode.day ? DatePickerMode.year : DatePickerMode.day);
           },
         ),

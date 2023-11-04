@@ -1,9 +1,5 @@
 part of '../calendar_date_picker2.dart';
 
-/// A button that used to toggle the [DatePickerMode] for a date picker.
-///
-/// This appears above the calendar grid and allows the user to toggle the
-/// [DatePickerMode] to display either the calendar view or the year list.
 class _DatePickerModeToggleButton extends StatefulWidget {
   const _DatePickerModeToggleButton({
     required this.mode,
@@ -12,16 +8,12 @@ class _DatePickerModeToggleButton extends StatefulWidget {
     required this.config,
   });
 
-  /// The current display of the calendar picker.
   final DatePickerMode mode;
 
-  /// The text that displays the current month/year being viewed.
   final String title;
 
-  /// The callback when the title is pressed.
   final VoidCallback onTitlePressed;
 
-  /// The calendar configurations
   final CalendarDatePicker2Config config;
 
   @override

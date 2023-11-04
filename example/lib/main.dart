@@ -47,7 +47,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<DateTime?> _singleDatePickerValueWithDefaultValue = [
+  final List<DateTime?> _singleDatePickerValueWithDefaultValue = [
     DateTime.now(),
   ];
   List<DateTime?> _rangeDatePickerValueWithDefaultValue = [
@@ -112,13 +112,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildDefaultRangeDatePickerWithValue() {
     final config = CalendarDatePicker2Config(
-        calendarType: CalendarDatePicker2Type.range,
-        themeColor: Colors.cyan.shade900,
-        yearNameTextStyle: const TextStyle(color: Colors.red),
-        selectedDataTextStyle: TextStyle(color: Colors.red));
+      calendarType: CalendarDatePicker2Type.range,
+      themeColor: Colors.cyan.shade900,
+    );
 
     return CalendarDatePicker2(
-      arrowColro: Colors.black,
       config: config,
       value: _rangeDatePickerValueWithDefaultValue,
       onValueChanged: (dates) => setState(() => _rangeDatePickerValueWithDefaultValue = dates),

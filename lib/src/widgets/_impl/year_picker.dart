@@ -1,20 +1,6 @@
 part of '../calendar_date_picker2.dart';
 
-/// A scrollable grid of years to allow picking a year.
-///
-/// The year picker widget is rarely used directly. Instead, consider using
-/// [CalendarDatePicker2], or [showDatePicker2] which create full date pickers.
-///
-/// See also:
-///
-///  * [CalendarDatePicker2], which provides a Material Design date picker
-///    interface.
-///
-///  * [showDatePicker2], which shows a dialog containing a Material Design
-///    date picker.
-///
 class YearPicker extends StatefulWidget {
-  /// Creates a year picker.
   const YearPicker({
     required this.config,
     required this.selectedDates,
@@ -24,21 +10,14 @@ class YearPicker extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  /// The calendar configurations
   final CalendarDatePicker2Config config;
 
-  /// The currently selected dates.
-  ///
-  /// Selected dates are highlighted in the picker.
   final List<DateTime?> selectedDates;
 
-  /// Called when the user picks a year.
   final ValueChanged<DateTime> onChanged;
 
-  /// The initial month to display.
   final DateTime initialMonth;
 
-  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
 
   @override
@@ -50,7 +29,6 @@ class _YearPickerState extends State<YearPicker> {
 
   final defaultColor = const Color.fromRGBO(183, 84, 0, 1);
 
-  // The approximate number of years necessary to fill the available space.
   static const int minYears = 18;
 
   @override
@@ -76,7 +54,6 @@ class _YearPickerState extends State<YearPicker> {
   double _scrollOffsetForYear(DateTime date) {
     final int initialYearIndex = date.year - widget.config.firstDate!.year;
     final int initialYearRow = initialYearIndex ~/ _yearPickerColumnCount;
-    // Move the offset down by 2 rows to approximately center it.
     final int centeredYearRow = initialYearRow - 2;
     return _itemCount < minYears ? 0 : centeredYearRow * _yearPickerRowHeight;
   }
@@ -84,7 +61,6 @@ class _YearPickerState extends State<YearPicker> {
   Widget _buildYearItem(BuildContext context, int index) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    // Backfill the _YearPicker with disabled years if necessary.
     final int offset = _itemCount < minYears ? (minYears - _itemCount) ~/ 2 : 0;
     final int year = widget.config.firstDate!.year + index - offset;
     final bool isSelected = widget.selectedDates.any((d) => d?.year == year);
@@ -97,7 +73,6 @@ class _YearPickerState extends State<YearPicker> {
     if (isSelected) {
       decoration = BoxDecoration(
         color: widget.config.themeColor ?? defaultColor,
-        // color: widget.config.selectedDayHighlightColor ?? defaultColor,
         borderRadius: BorderRadius.circular(decorationHeight / 2),
       );
     } else if (isCurrentYear && !isDisabled) {

@@ -123,8 +123,6 @@ class _DayPickerState extends State<_DayPicker> {
             shape: BoxShape.circle,
           );
         }
-
-        // ignore: unused_local_variable
         var customDayTextStyle = isSelectedDay
             ? widget.config.selectedDataTextStyle
             : widget.config.notSelectedDataTextStyle ?? const TextStyle(color: Colors.black);
@@ -140,8 +138,13 @@ class _DayPickerState extends State<_DayPicker> {
           isDateInBetweenRangePickerSelectedDates = !(dayToBuild.isBefore(startDate) || dayToBuild.isAfter(endDate)) &&
               !DateUtils.isSameDay(startDate, endDate);
         }
-        final dayTextStyle = customDayTextStyle;
-        Widget dayWidget = _buildDefaultDayWidgetContent(decoration, localizations, day, dayTextStyle ?? TextStyle());
+        final dayTextStyle = customDayTextStyle ?? const TextStyle(color: Colors.white);
+        Widget dayWidget = _buildDefaultDayWidgetContent(
+          decoration,
+          localizations,
+          day,
+          dayTextStyle,
+        );
 
         if (isDateInBetweenRangePickerSelectedDates) {
           final rangePickerIncludedDayDecoration = BoxDecoration(

@@ -3,34 +3,23 @@ part of '../calendar_date_picker2.dart';
 T? _ambiguate<T>(T? value) => value;
 
 class _CalendarView extends StatefulWidget {
-  /// Creates a month picker.
   const _CalendarView({
     required this.config,
     required this.initialMonth,
     required this.selectedDates,
     required this.onChanged,
     required this.onDisplayedMonthChanged,
-    // required this.arrowColor,
     Key? key,
   }) : super(key: key);
 
-  /// The calendar configurations
   final CalendarDatePicker2Config config;
 
-  /// The initial month to display.
   final DateTime initialMonth;
 
-  /// The currently selected dates.
-  ///
-  /// Selected dates are highlighted in the picker.
   final List<DateTime?> selectedDates;
 
-  /// Called when the user picks a day.
   final ValueChanged<DateTime> onChanged;
 
-  // final Color arrowColor;
-
-  /// Called when the user navigates to a new month.
   final ValueChanged<DateTime> onDisplayedMonthChanged;
 
   @override
@@ -78,10 +67,6 @@ class _CalendarViewState extends State<_CalendarView> {
   void didUpdateWidget(_CalendarView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialMonth != oldWidget.initialMonth && widget.initialMonth != _currentMonth) {
-      // We can't interrupt this widget build with a scroll, so do it next frame
-      // Add workaround to fix Flutter 3.0.0 compiler issue
-      // https://github.com/flutter/flutter/issues/103561#issuecomment-1125512962
-      // https://github.com/flutter/website/blob/3e6d87f13ad2a8dd9cf16081868cc3b3794abb90/src/development/tools/sdk/release-notes/release-notes-3.0.0.md#your-code
       _ambiguate(WidgetsBinding.instance)!.addPostFrameCallback(
         (Duration timeStamp) => _showMonth(widget.initialMonth, jump: true),
       );
@@ -107,9 +92,6 @@ class _CalendarViewState extends State<_CalendarView> {
         _currentMonth = DateTime(monthDate.year, monthDate.month);
         widget.onDisplayedMonthChanged(_currentMonth);
         if (_focusedDay != null && !DateUtils.isSameMonth(_focusedDay, _currentMonth)) {
-          // We have navigated to a new month with the grid focused, but the
-          // focused day is not in this month. Choose a new one trying to keep
-          // the same day of the month.
           _focusedDay = _focusableDayForMonth(_currentMonth, _focusedDay!.day);
         }
         SemanticsService.announce(
@@ -120,21 +102,14 @@ class _CalendarViewState extends State<_CalendarView> {
     });
   }
 
-  /// Returns a focusable date for the given month.
-  ///
-  /// If the preferredDay is available in the month it will be returned,
-  /// otherwise the first selectable day in the month will be returned. If
-  /// no dates are selectable in the month, then it will return null.
   DateTime? _focusableDayForMonth(DateTime month, int preferredDay) {
     final int daysInMonth = DateUtils.getDaysInMonth(month.year, month.month);
 
-    // Can we use the preferred day in this month?
     if (preferredDay <= daysInMonth) {
       final DateTime newFocus = DateTime(month.year, month.month, preferredDay);
       if (_isSelectable(newFocus)) return newFocus;
     }
 
-    // Start at the 1st and take the first selectable date.
     for (int day = 1; day <= daysInMonth; day++) {
       final DateTime newFocus = DateTime(month.year, month.month, day);
       if (_isSelectable(newFocus)) return newFocus;
@@ -142,7 +117,6 @@ class _CalendarViewState extends State<_CalendarView> {
     return null;
   }
 
-  /// Navigate to the next month.
   void _handleNextMonth() {
     if (!_isDisplayingLastMonth) {
       _pageController.nextPage(
@@ -152,7 +126,6 @@ class _CalendarViewState extends State<_CalendarView> {
     }
   }
 
-  /// Navigate to the previous month.
   void _handlePreviousMonth() {
     if (!_isDisplayingFirstMonth) {
       _pageController.previousPage(
@@ -162,7 +135,6 @@ class _CalendarViewState extends State<_CalendarView> {
     }
   }
 
-  /// Navigate to the given month.
   void _showMonth(DateTime month, {bool jump = false}) {
     final int monthPage = DateUtils.monthDelta(widget.config.firstDate!, month);
     if (jump) {
@@ -176,21 +148,18 @@ class _CalendarViewState extends State<_CalendarView> {
     }
   }
 
-  /// True if the earliest allowable month is displayed.
   bool get _isDisplayingFirstMonth {
     return !_currentMonth.isAfter(
       DateTime(widget.config.firstDate!.year, widget.config.firstDate!.month),
     );
   }
 
-  /// True if the latest allowable month is displayed.
   bool get _isDisplayingLastMonth {
     return !_currentMonth.isBefore(
       DateTime(widget.config.lastDate!.year, widget.config.lastDate!.month),
     );
   }
 
-  /// Handler for when the overall day grid obtains or loses focus.
   void _handleGridFocusChange(bool focused) {
     setState(() {
       if (focused && _focusedDay == null && widget.selectedDates.isNotEmpty) {
@@ -205,27 +174,16 @@ class _CalendarViewState extends State<_CalendarView> {
     });
   }
 
-  /// Move focus to the next element after the day grid.
   void _handleGridNextFocus(NextFocusIntent intent) {
     _dayGridFocus.requestFocus();
     _dayGridFocus.nextFocus();
   }
 
-  /// Move focus to the previous element before the day grid.
   void _handleGridPreviousFocus(PreviousFocusIntent intent) {
     _dayGridFocus.requestFocus();
     _dayGridFocus.previousFocus();
   }
 
-  /// Move the internal focus date in the direction of the given intent.
-  ///
-  /// This will attempt to move the focused day to the next selectable day in
-  /// the given direction. If the new date is not in the current month, then
-  /// the page view will be scrolled to show the new date's month.
-  ///
-  /// For horizontal directions, it will move forward or backward a day (depending
-  /// on the current [TextDirection]). For vertical directions it will move up and
-  /// down a week at a time.
   void _handleDirectionFocus(DirectionalFocusIntent intent) {
     setState(() {
       if (_focusedDay != null) {
@@ -250,7 +208,6 @@ class _CalendarViewState extends State<_CalendarView> {
   };
 
   int _dayDirectionOffset(TraversalDirection traversalDirection, TextDirection textDirection) {
-    // Swap left and right if the text direction if RTL
     if (textDirection == TextDirection.rtl) {
       if (traversalDirection == TraversalDirection.left) {
         traversalDirection = TraversalDirection.right;
@@ -300,7 +257,6 @@ class _CalendarViewState extends State<_CalendarView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // if (widget.config.centerAlignModePicker != true) const Spacer(),
                 IconButton(
                   icon: Icon(
                     Icons.chevron_left,
@@ -311,7 +267,6 @@ class _CalendarViewState extends State<_CalendarView> {
                   tooltip: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
                   onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
                 ),
-                // if (widget.config.centerAlignModePicker == true) const Spacer(),
                 IconButton(
                   icon: Icon(
                     Icons.chevron_right,
