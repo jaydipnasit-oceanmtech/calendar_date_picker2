@@ -72,9 +72,16 @@ class _DatePickerModeToggleButtonState extends State<_DatePickerModeToggleButton
             onTap: widget.config.disableModePicker == true ? null : widget.onTitlePressed,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(widget.title,
-                    overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+              children: [
+                Text(
+                  widget.title,
+                  overflow: TextOverflow.ellipsis,
+                  style: widget.config.monthNameTextStyle ??
+                      const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                ),
               ],
             ),
           ),

@@ -10,7 +10,7 @@ class _CalendarView extends StatefulWidget {
     required this.selectedDates,
     required this.onChanged,
     required this.onDisplayedMonthChanged,
-    required this.arrowColor,
+    // required this.arrowColor,
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class _CalendarView extends StatefulWidget {
   /// Called when the user picks a day.
   final ValueChanged<DateTime> onChanged;
 
-  final Color arrowColor;
+  // final Color arrowColor;
 
   /// Called when the user navigates to a new month.
   final ValueChanged<DateTime> onDisplayedMonthChanged;
@@ -52,7 +52,7 @@ class _CalendarViewState extends State<_CalendarView> {
   void initState() {
     super.initState();
     _currentMonth = widget.initialMonth;
-    _pageController = PageController(initialPage: DateUtils.monthDelta(widget.config.firstDate, _currentMonth));
+    _pageController = PageController(initialPage: DateUtils.monthDelta(widget.config.firstDate!, _currentMonth));
     _shortcutMap = const <ShortcutActivator, Intent>{
       SingleActivator(LogicalKeyboardKey.arrowLeft): DirectionalFocusIntent(TraversalDirection.left),
       SingleActivator(LogicalKeyboardKey.arrowRight): DirectionalFocusIntent(TraversalDirection.right),
@@ -102,7 +102,7 @@ class _CalendarViewState extends State<_CalendarView> {
 
   void _handleMonthPageChanged(int monthPage) {
     setState(() {
-      final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.config.firstDate, monthPage);
+      final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.config.firstDate!, monthPage);
       if (!DateUtils.isSameMonth(_currentMonth, monthDate)) {
         _currentMonth = DateTime(monthDate.year, monthDate.month);
         widget.onDisplayedMonthChanged(_currentMonth);
@@ -164,7 +164,7 @@ class _CalendarViewState extends State<_CalendarView> {
 
   /// Navigate to the given month.
   void _showMonth(DateTime month, {bool jump = false}) {
-    final int monthPage = DateUtils.monthDelta(widget.config.firstDate, month);
+    final int monthPage = DateUtils.monthDelta(widget.config.firstDate!, month);
     if (jump) {
       _pageController.jumpToPage(monthPage);
     } else {
@@ -179,14 +179,14 @@ class _CalendarViewState extends State<_CalendarView> {
   /// True if the earliest allowable month is displayed.
   bool get _isDisplayingFirstMonth {
     return !_currentMonth.isAfter(
-      DateTime(widget.config.firstDate.year, widget.config.firstDate.month),
+      DateTime(widget.config.firstDate!.year, widget.config.firstDate!.month),
     );
   }
 
   /// True if the latest allowable month is displayed.
   bool get _isDisplayingLastMonth {
     return !_currentMonth.isBefore(
-      DateTime(widget.config.lastDate.year, widget.config.lastDate.month),
+      DateTime(widget.config.lastDate!.year, widget.config.lastDate!.month),
     );
   }
 
@@ -197,7 +197,7 @@ class _CalendarViewState extends State<_CalendarView> {
         if (DateUtils.isSameMonth(widget.selectedDates[0], _currentMonth)) {
           _focusedDay = widget.selectedDates[0];
         } else if (DateUtils.isSameMonth(widget.config.currentDate, _currentMonth)) {
-          _focusedDay = _focusableDayForMonth(_currentMonth, widget.config.currentDate.day);
+          _focusedDay = _focusableDayForMonth(_currentMonth, widget.config.currentDate!.day);
         } else {
           _focusedDay = _focusableDayForMonth(_currentMonth, 1);
         }
@@ -264,7 +264,7 @@ class _CalendarViewState extends State<_CalendarView> {
   DateTime? _nextDateInDirection(DateTime date, TraversalDirection direction) {
     final TextDirection textDirection = Directionality.of(context);
     DateTime nextDate = DateUtils.addDaysToDate(date, _dayDirectionOffset(direction, textDirection));
-    while (!nextDate.isBefore(widget.config.firstDate) && !nextDate.isAfter(widget.config.lastDate)) {
+    while (!nextDate.isBefore(widget.config.firstDate!) && !nextDate.isAfter(widget.config.lastDate!)) {
       if (_isSelectable(nextDate)) {
         return nextDate;
       }
@@ -278,7 +278,7 @@ class _CalendarViewState extends State<_CalendarView> {
   }
 
   Widget _buildItems(BuildContext context, int index) {
-    final DateTime month = DateUtils.addMonthsToMonthDate(widget.config.firstDate, index);
+    final DateTime month = DateUtils.addMonthsToMonthDate(widget.config.firstDate!, index);
     return _DayPicker(
       key: ValueKey<DateTime>(month),
       selectedDates: (widget.selectedDates..removeWhere((d) => d == null)).cast<DateTime>(),
@@ -302,24 +302,22 @@ class _CalendarViewState extends State<_CalendarView> {
               children: <Widget>[
                 // if (widget.config.centerAlignModePicker != true) const Spacer(),
                 IconButton(
-                  icon: widget.config.lastMonthIcon ??
-                      Icon(
-                        Icons.chevron_left,
-                        size: 35,
-                        color: widget.arrowColor,
-                      ),
+                  icon: Icon(
+                    Icons.chevron_left,
+                    size: 35,
+                    color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
+                  ),
                   color: controlColor,
                   tooltip: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
                   onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
                 ),
                 // if (widget.config.centerAlignModePicker == true) const Spacer(),
                 IconButton(
-                  icon: widget.config.nextMonthIcon ??
-                      Icon(
-                        Icons.chevron_right,
-                        size: 35,
-                        color: widget.arrowColor,
-                      ),
+                  icon: Icon(
+                    Icons.chevron_right,
+                    size: 35,
+                    color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
+                  ),
                   color: controlColor,
                   tooltip: _isDisplayingLastMonth ? null : _localizations.nextMonthTooltip,
                   onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
@@ -342,7 +340,7 @@ class _CalendarViewState extends State<_CalendarView> {
                   key: _pageViewKey,
                   controller: _pageController,
                   itemBuilder: _buildItems,
-                  itemCount: DateUtils.monthDelta(widget.config.firstDate, widget.config.lastDate) + 1,
+                  itemCount: DateUtils.monthDelta(widget.config.firstDate!, widget.config.lastDate!) + 1,
                   onPageChanged: _handleMonthPageChanged,
                 ),
               ),

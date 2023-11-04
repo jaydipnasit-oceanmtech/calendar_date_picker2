@@ -19,8 +19,7 @@ part '_impl/year_picker.dart';
 const Duration _monthScrollDuration = Duration(milliseconds: 200);
 
 const double _dayPickerRowHeight = 42.0;
-const int _maxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
-// One extra row for the day-of-week header.
+const int _maxDayPickerRowCount = 6;
 const double _maxDayPickerHeight = _dayPickerRowHeight * (_maxDayPickerRowCount + 1);
 const double _monthPickerHorizontalPadding = 8.0;
 
@@ -29,8 +28,7 @@ const double _yearPickerPadding = 16.0;
 const double _yearPickerRowHeight = 52.0;
 const double _yearPickerRowSpacing = 8.0;
 
-const double _subHeaderHeight = 52.0;
-const double _monthNavButtonsWidth = 108.0;
+const double _subHeaderHeight = 50.0;
 
 class CalendarDatePicker2 extends StatefulWidget {
   CalendarDatePicker2({
@@ -39,7 +37,8 @@ class CalendarDatePicker2 extends StatefulWidget {
     this.onValueChanged,
     this.displayedMonthDate,
     this.onDisplayedMonthChanged,
-    required this.arrowColro,
+    this.arrowColro,
+    this.theamColor,
     Key? key,
   }) : super(key: key) {
     const valid = true;
@@ -61,13 +60,13 @@ class CalendarDatePicker2 extends StatefulWidget {
     }
   }
 
-  /// The calendar UI related configurations
   final CalendarDatePicker2Config config;
 
   /// The selected [DateTime]s that the picker should display.
   final List<DateTime?> value;
 
-  final Color arrowColro;
+  final Color? arrowColro;
+  final Color? theamColor;
 
   /// Called when the selected dates changed
   final ValueChanged<List<DateTime?>>? onValueChanged;
@@ -100,7 +99,7 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
         (widget.value.isNotEmpty && widget.value[0] != null
             ? DateTime(widget.value[0]!.year, widget.value[0]!.month)
             : DateUtils.dateOnly(DateTime.now()));
-    _mode = config.calendarViewMode;
+    _mode = config.calendarViewMode!;
     _currentDisplayedMonthDate = DateTime(initialDate.year, initialDate.month);
     _selectedDates = widget.value.toList();
   }
@@ -109,7 +108,7 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
   void didUpdateWidget(CalendarDatePicker2 oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.config.calendarViewMode != oldWidget.config.calendarViewMode) {
-      _mode = widget.config.calendarViewMode;
+      _mode = widget.config.calendarViewMode!;
     }
 
     if (widget.displayedMonthDate != null) {
@@ -208,10 +207,10 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
   void _handleYearChanged(DateTime value) {
     _vibrate();
 
-    if (value.isBefore(widget.config.firstDate)) {
-      value = widget.config.firstDate;
-    } else if (value.isAfter(widget.config.lastDate)) {
-      value = widget.config.lastDate;
+    if (value.isBefore(widget.config.firstDate!)) {
+      value = widget.config.firstDate!;
+    } else if (value.isAfter(widget.config.lastDate!)) {
+      value = widget.config.lastDate!;
     }
 
     setState(() {
@@ -232,14 +231,14 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
           selectedDates = [value];
           break;
 
-        case CalendarDatePicker2Type.multi:
-          final index = selectedDates.indexWhere((d) => DateUtils.isSameDay(d, value));
-          if (index != -1) {
-            selectedDates.removeAt(index);
-          } else {
-            selectedDates.add(value);
-          }
-          break;
+        // case CalendarDatePicker2Type.multi:
+        //   final index = selectedDates.indexWhere((d) => DateUtils.isSameDay(d, value));
+        //   if (index != -1) {
+        //     selectedDates.removeAt(index);
+        //   } else {
+        //     selectedDates.add(value);
+        //   }
+        //   break;
 
         case CalendarDatePicker2Type.range:
           if (selectedDates.isEmpty) {
@@ -247,7 +246,7 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
             break;
           }
 
-          final bidirectional = widget.config.rangeBidirectional;
+          const bidirectional = false;
 
           final isRangeSet = selectedDates.length > 1 && selectedDates[1] != null;
           final isSelectedDayBeforeStartDate = value.isBefore(selectedDates[0]!);
@@ -261,6 +260,7 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
           }
 
           break;
+        default:
       }
 
       selectedDates
@@ -286,7 +286,7 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
           selectedDates: _selectedDates,
           onChanged: _handleDayChanged,
           onDisplayedMonthChanged: _handleMonthChanged,
-          arrowColor: widget.arrowColro,
+          // arrowColor: widget.arrowColro ?? const Color.fromRGBO(183, 84, 0, 1),
         );
       case DatePickerMode.year:
         return Padding(
