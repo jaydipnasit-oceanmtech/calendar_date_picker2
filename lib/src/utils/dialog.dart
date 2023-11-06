@@ -17,17 +17,23 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
   RouteSettings? routeSettings,
   String? barrierLabel,
   TransitionBuilder? builder,
+  EdgeInsets? insetPadding,
 }) {
-  var dialog = Dialog(
-    insetPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-    backgroundColor: dialogBackgroundColor ?? Theme.of(context).canvasColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: borderRadius ?? BorderRadius.circular(10),
-    ),
-    clipBehavior: Clip.antiAlias,
-    child: SizedBox(
+  var dialog = AlertDialog(
+    alignment: Alignment.center,
+    actionsOverflowButtonSpacing: 0,
+    contentPadding: EdgeInsets.zero,
+    
+    insetPadding: insetPadding ?? const EdgeInsets.all(10),
+    backgroundColor: Colors.transparent,
+    // backgroundColor: dialogBackgroundColor ?? Colors.white,
+    content: Container(
+      decoration: BoxDecoration(
+        color: dialogBackgroundColor ?? Colors.white,
+        borderRadius: borderRadius ?? BorderRadius.circular(15),
+      ),
       width: dialogSize.width,
-      height: max(dialogSize.height, 410),
+      height: dialogSize.height,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
