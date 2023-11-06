@@ -47,6 +47,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<DateTime?> _dialogCalendarPickerValue = [
+    DateTime.now(),
+    // DateTime(2021, 8, 13),
+  ];
   final List<DateTime?> _singleDatePickerValueWithDefaultValue = [
     DateTime.now(),
   ];
@@ -55,6 +59,14 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ];
 
+  DateTime dateTime = DateTime.now();
+
+  final config = CalendarDatePicker2Config(
+    calendarType: CalendarDatePicker2Type.single,
+    themeColor: Colors.amber,
+    displayOkCancleButon: false,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,14 +74,22 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: SizedBox(
-          width: 375,
-          child: ListView(
-            children: <Widget>[
-              singleDatePicker(),
-              buildDefaultRangeDatePickerWithValue(),
-            ],
-          ),
+        child: ElevatedButton(
+          onPressed: () async {
+            final values = await showCalendarDatePicker2Dialog(
+              context: context,
+              config: config,
+              dialogSize: const Size(325, 400),
+              borderRadius: BorderRadius.circular(15),
+              value: _dialogCalendarPickerValue,
+              dialogBackgroundColor: Colors.white,
+            );
+            if (values != null) {
+              dateTime = values[0]!;
+              setState(() {});
+            }
+          },
+          child: Text('$dateTime'),
         ),
       ),
     );

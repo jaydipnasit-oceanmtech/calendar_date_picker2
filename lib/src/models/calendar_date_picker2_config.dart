@@ -75,6 +75,7 @@ class CalendarDatePicker2Config {
     // bool
 
     this.disableModePicker,
+    this.displayOkCancleButon,
   })  : firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1970)),
         lastDate = DateUtils.dateOnly(lastDate ?? DateTime(DateTime.now().year + 100)),
         currentDate = currentDate ?? DateUtils.dateOnly(DateTime.now()),
@@ -121,4 +122,5 @@ class CalendarDatePicker2Config {
   // bool
 
   bool? disableModePicker;
+  bool? displayOkCancleButon;
 }
