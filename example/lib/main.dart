@@ -47,9 +47,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<DateTime?> _dialogCalendarPickerValue = [
+  final List<DateTime?> _dialogCalendarPickerValue = [
     DateTime.now(),
-    // DateTime(2021, 8, 13),
   ];
   final List<DateTime?> _singleDatePickerValueWithDefaultValue = [
     DateTime.now(),
@@ -59,10 +58,10 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ];
 
-  DateTime dateTime = DateTime.now();
+  List<DateTime?> dateTime = [DateTime.now()];
 
   final config = CalendarDatePicker2Config(
-    calendarType: CalendarDatePicker2Type.single,
+    calendarType: CalendarDatePicker2Type.range,
     themeColor: Colors.amber,
     displayOkCancleButon: false,
   );
@@ -85,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
               dialogBackgroundColor: Colors.white,
             );
             if (values != null) {
-              dateTime = values[0]!;
+              dateTime = values;
               setState(() {});
             }
           },
@@ -102,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
     values = values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
     var valueText = (values.isNotEmpty ? values[0] : null).toString().replaceAll('00:00:00.000', '');
 
-    if (datePickerType == CalendarDatePicker2Type.range) {
+    if (datePickerType == CalendarDatePicker2Type.single) {
       if (values.isNotEmpty) {
         final startDate = values[0].toString().replaceAll('00:00:00.000', '');
         final endDate = values.length > 1 ? values[1].toString().replaceAll('00:00:00.000', '') : 'null';
@@ -132,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildDefaultRangeDatePickerWithValue() {
     final config = CalendarDatePicker2Config(
-      calendarType: CalendarDatePicker2Type.range,
+      calendarType: CalendarDatePicker2Type.single,
       themeColor: Colors.cyan.shade900,
     );
 

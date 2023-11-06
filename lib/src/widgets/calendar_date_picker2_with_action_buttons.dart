@@ -66,25 +66,20 @@ class _CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicke
         MediaQuery.removePadding(
           context: context,
           child: CalendarDatePicker2(
-            value: _editCache,
+            value: [..._editCache],
             config: widget.config,
-            onValueChanged: (values) {
-              _editCache = values;
-              Navigator.pop(context, values);
-            },
+            onValueChanged: (values) => _editCache = values,
             onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
           ),
         ),
-        SizedBox(height: 10),
-        widget.config.displayOkCancleButon == true
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildCancelButton(Theme.of(context).colorScheme, localizations),
-                  _buildOkButton(Theme.of(context).colorScheme, localizations),
-                ],
-              )
-            : const SizedBox.shrink()
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildCancelButton(Theme.of(context).colorScheme, localizations),
+            _buildOkButton(Theme.of(context).colorScheme, localizations),
+          ],
+        ),
       ],
     );
   }
@@ -93,15 +88,16 @@ class _CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicke
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
+        _editCache = _values;
+        widget.onCancelTapped?.call();
         Navigator.pop(context);
-        // }
       }),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: Text(
           localizations.cancelButtonLabel.toUpperCase(),
           style: TextStyle(
-            color: Colors.amber,
+            color: colorScheme.primary,
             fontWeight: FontWeight.w700,
             fontSize: 14,
           ),
@@ -114,14 +110,17 @@ class _CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicke
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
-
+        _values = _editCache;
+        widget.onValueChanged?.call(_values);
+        widget.onOkTapped?.call();
+        Navigator.pop(context, _values);
       }),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: Text(
           localizations.okButtonLabel.toUpperCase(),
           style: TextStyle(
-            color: Colors.indigo,
+            color: colorScheme.primary,
             fontWeight: FontWeight.w700,
             fontSize: 14,
           ),
