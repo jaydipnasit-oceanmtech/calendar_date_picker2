@@ -20,17 +20,17 @@ class CalendarDatePicker2WithActionButtons extends StatefulWidget {
   final Function? onOkTapped;
 
   @override
-  State<CalendarDatePicker2WithActionButtons> createState() => _CalendarDatePicker2WithActionButtonsState();
+  State<CalendarDatePicker2WithActionButtons> createState() => CalendarDatePicker2WithActionButtonsState();
 }
 
-class _CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker2WithActionButtons> {
-  List<DateTime?> _values = [];
-  List<DateTime?> _editCache = [];
+class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker2WithActionButtons> {
+   List<DateTime?> values = [];
+   List<DateTime?> editCache = [];
 
   @override
   void initState() {
-    _values = widget.value;
-    _editCache = widget.value;
+    values = widget.value;
+    editCache = widget.value;
     super.initState();
   }
 
@@ -50,82 +50,111 @@ class _CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicke
     }
 
     if (!isValueSame) {
-      _values = widget.value;
-      _editCache = widget.value;
+      values = widget.value;
+      editCache = widget.value;
     }
 
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+  Widget build(
+    BuildContext context,
+  ) {
+    // print(widget.config.themeColor);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         MediaQuery.removePadding(
           context: context,
           child: CalendarDatePicker2(
-            value: [..._editCache],
+            value: editCache,
             config: widget.config,
-            onValueChanged: (values) => _editCache = values,
+            onValueChanged: (values) => editCache = values,
             onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
           ),
         ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _buildCancelButton(Theme.of(context).colorScheme, localizations),
-            _buildOkButton(Theme.of(context).colorScheme, localizations),
-          ],
-        ),
+        SizedBox(height: widget.config.spaceBetweenCalenderAndButtons ?? 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              buildCancelButton(
+                Theme.of(context).colorScheme,
+              ),
+              buildOkButton(Theme.of(context).colorScheme),
+            ],
+          ),
+        )
       ],
     );
   }
 
-  Widget _buildCancelButton(ColorScheme colorScheme, MaterialLocalizations localizations) {
+  Widget buildCancelButton(
+    ColorScheme colorScheme,
+  ) {
+    MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
-        _editCache = _values;
+        editCache = values;
         widget.onCancelTapped?.call();
         Navigator.pop(context);
       }),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        child: Text(
-          localizations.cancelButtonLabel.toUpperCase(),
-          style: TextStyle(
-            color: colorScheme.primary,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
+      child: widget.config.cancleButtonWidget ??
+          Container(
+            height: widget.config.cancleButtonSize?.height ?? 50,
+            width: widget.config.cancleButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: widget.config.themeColor?.withOpacity(0.5) ??
+                    widget.config.cancleButtonColor?.withOpacity(0.5) ??
+                    const Color.fromRGBO(255, 231, 210, 1),
+                borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: Text(
+              localizations.cancelButtonLabel.toUpperCase(),
+              style: const TextStyle(
+                color: Color.fromRGBO(183, 84, 0, 1),
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+              ),
+            ),
           ),
-        ),
-      ),
     );
   }
 
-  Widget _buildOkButton(ColorScheme colorScheme, MaterialLocalizations localizations) {
+  Widget buildOkButton(
+    ColorScheme colorScheme,
+  ) {
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
-        _values = _editCache;
-        widget.onValueChanged?.call(_values);
+        values = editCache;
+        widget.onValueChanged?.call(values);
         widget.onOkTapped?.call();
-        Navigator.pop(context, _values);
+        Navigator.pop(context, values);
       }),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        child: Text(
-          localizations.okButtonLabel.toUpperCase(),
-          style: TextStyle(
-            color: colorScheme.primary,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
+      child: widget.config.applyButtonWidget ??
+          Container(
+            alignment: Alignment.center,
+            height: widget.config.applyButtonSize?.height ?? 50,
+            width: widget.config.applyButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
+            decoration: BoxDecoration(
+                color:
+                    widget.config.themeColor ?? widget.config.applyButtonColor ?? const Color.fromRGBO(183, 84, 0, 1),
+                borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: const Text(
+              "Apply",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+              ),
+            ),
           ),
-        ),
-      ),
     );
   }
 }

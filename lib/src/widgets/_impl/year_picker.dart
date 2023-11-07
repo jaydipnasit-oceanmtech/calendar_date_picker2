@@ -45,7 +45,7 @@ class _YearPickerState extends State<YearPicker> {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedDates != oldWidget.selectedDates) {
       final scrollOffset = widget.selectedDates.isNotEmpty && widget.selectedDates[0] != null
-          ? _scrollOffsetForYear(widget.selectedDates[1]!)
+          ? _scrollOffsetForYear(widget.selectedDates[0]!)
           : _scrollOffsetForYear(DateUtils.dateOnly(DateTime.now()));
       _scrollController.jumpTo(scrollOffset);
     }

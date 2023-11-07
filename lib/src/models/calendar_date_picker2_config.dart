@@ -48,6 +48,8 @@ class CalendarDatePicker2Config {
     this.currentDayBoarderColor,
     this.selectedDateBoxColor,
     this.selectedYearBoxColor,
+    this.applyButtonColor,
+    this.cancleButtonColor,
 
     //  styles
 
@@ -71,11 +73,18 @@ class CalendarDatePicker2Config {
     // size
 
     this.controlsHeight,
-
+    this.cancleButtonSize,
+    this.applyButtonSize,
+    this.spaceBetweenCalenderAndButtons,
     // bool
 
     this.disableModePicker,
     this.displayOkCancleButon,
+
+    // widget
+
+    this.applyButtonWidget,
+    this.cancleButtonWidget,
   })  : firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1970)),
         lastDate = DateUtils.dateOnly(lastDate ?? DateTime(DateTime.now().year + 100)),
         currentDate = currentDate ?? DateUtils.dateOnly(DateTime.now()),
@@ -95,6 +104,8 @@ class CalendarDatePicker2Config {
   Color? currentDayBoarderColor;
   Color? selectedDateBoxColor;
   Color? selectedYearBoxColor;
+  Color? applyButtonColor;
+  Color? cancleButtonColor;
 
   // style
 
@@ -118,9 +129,17 @@ class CalendarDatePicker2Config {
   // size
 
   double? controlsHeight;
+  Size? cancleButtonSize;
+  Size? applyButtonSize;
+  double? spaceBetweenCalenderAndButtons;
 
   // bool
 
   bool? disableModePicker;
   bool? displayOkCancleButon;
+
+  // Widget
+
+  Widget? applyButtonWidget;
+  Widget? cancleButtonWidget;
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 
@@ -23,10 +21,8 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
     alignment: Alignment.center,
     actionsOverflowButtonSpacing: 0,
     contentPadding: EdgeInsets.zero,
-    
     insetPadding: insetPadding ?? const EdgeInsets.all(10),
     backgroundColor: Colors.transparent,
-    // backgroundColor: dialogBackgroundColor ?? Colors.white,
     content: Container(
       decoration: BoxDecoration(
         color: dialogBackgroundColor ?? Colors.white,
