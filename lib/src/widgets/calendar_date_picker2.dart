@@ -21,10 +21,10 @@ const double _monthPickerHorizontalPadding = 8.0;
 
 const int _yearPickerColumnCount = 3;
 const double _yearPickerPadding = 16.0;
-const double _yearPickerRowHeight = 52.0;
+const double _yearPickerRowHeight = 65.0;
 const double _yearPickerRowSpacing = 8.0;
 
-const double _subHeaderHeight = 50.0;
+const double _subHeaderHeight = 40.0;
 
 class CalendarDatePicker2 extends StatefulWidget {
   CalendarDatePicker2({
@@ -287,7 +287,8 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
     return Stack(
       children: <Widget>[
         SizedBox(
-          height: (widget.config.controlsHeight ?? _subHeaderHeight) + _maxDayPickerHeight,
+          // height: (widget.config.controlsHeight ?? _subHeaderHeight) + _maxDayPickerHeight,
+          height: widget.config.calenderHeight ?? 300,
           child: _buildPicker(),
         ),
         _DatePickerModeToggleButton(

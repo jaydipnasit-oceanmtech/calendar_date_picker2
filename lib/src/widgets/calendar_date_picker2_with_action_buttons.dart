@@ -24,8 +24,8 @@ class CalendarDatePicker2WithActionButtons extends StatefulWidget {
 }
 
 class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker2WithActionButtons> {
-   List<DateTime?> values = [];
-   List<DateTime?> editCache = [];
+  List<DateTime?> values = [];
+  List<DateTime?> editCache = [];
 
   @override
   void initState() {
@@ -61,32 +61,29 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
   Widget build(
     BuildContext context,
   ) {
-    // print(widget.config.themeColor);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        MediaQuery.removePadding(
-          context: context,
-          child: CalendarDatePicker2(
-            value: editCache,
-            config: widget.config,
-            onValueChanged: (values) => editCache = values,
-            onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
-          ),
+        CalendarDatePicker2(
+          value: editCache,
+          config: widget.config,
+          onValueChanged: (values) => editCache = values,
+          onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
         ),
-        SizedBox(height: widget.config.spaceBetweenCalenderAndButtons ?? 10),
+        SizedBox(height: widget.config.spaceBetweenCalenderAndButtons ?? 5),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildCancelButton(
-                Theme.of(context).colorScheme,
+              Expanded(child: buildCancelButton(Theme.of(context).colorScheme)),
+              const SizedBox(
+                width: 20,
               ),
-              buildOkButton(Theme.of(context).colorScheme),
+              Expanded(child: buildOkButton(Theme.of(context).colorScheme)),
             ],
           ),
-        )
+        ),
       ],
     );
   }
@@ -105,7 +102,7 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
       child: widget.config.cancleButtonWidget ??
           Container(
             height: widget.config.cancleButtonSize?.height ?? 50,
-            width: widget.config.cancleButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
+            // width: widget.config.cancleButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: widget.config.themeColor?.withOpacity(0.5) ??
@@ -140,7 +137,7 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
           Container(
             alignment: Alignment.center,
             height: widget.config.applyButtonSize?.height ?? 50,
-            width: widget.config.applyButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
+            // width: widget.config.applyButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
             decoration: BoxDecoration(
                 color:
                     widget.config.themeColor ?? widget.config.applyButtonColor ?? const Color.fromRGBO(183, 84, 0, 1),

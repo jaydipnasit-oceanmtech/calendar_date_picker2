@@ -1,4 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -57,9 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DateTime?> dateTime = [DateTime.now()];
 
   final config = CalendarDatePicker2Config(
-    calendarType: CalendarDatePicker2Type.range,
+    calendarType: CalendarDatePicker2Type.single,
     // displayOkCancleButon: false,
   );
+
+  Color test = Colors.red;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +89,17 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text('$dateTime'),
         ),
       ),
+      // body: Container(
+      //   height: 200,
+      //   color: Colors.amber,
+      //   child: PageView(
+      //     pageSnapping: true,
+      //     children: [
+      //       Text("data"),
+      //       Text("data1"),
+      //     ],
+      //   ),
+      // ),
     );
   }
 

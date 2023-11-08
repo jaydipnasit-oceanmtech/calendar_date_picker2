@@ -27,7 +27,7 @@ class _CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<_CalendarView> {
-  final GlobalKey _pageViewKey = GlobalKey();
+  // final GlobalKey _pageViewKey = GlobalKey();
   late DateTime _currentMonth;
   late PageController _pageController;
   late MaterialLocalizations _localizations;
@@ -248,61 +248,88 @@ class _CalendarViewState extends State<_CalendarView> {
   @override
   Widget build(BuildContext context) {
     final Color controlColor = Theme.of(context).colorScheme.onSurface.withOpacity(0.60);
-
-    return Semantics(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: (widget.config.controlsHeight ?? _subHeaderHeight),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.chevron_left,
-                    size: 35,
-                    color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
-                  ),
-                  color: controlColor,
-                  tooltip: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
-                  onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        SizedBox(
+          height: (widget.config.controlsHeight ?? _subHeaderHeight),
+          child: Row(
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.chevron_left,
+                  size: 35,
+                  color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.chevron_right,
-                    size: 35,
-                    color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
-                  ),
-                  color: controlColor,
-                  tooltip: _isDisplayingLastMonth ? null : _localizations.nextMonthTooltip,
-                  onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+                color: controlColor,
+                tooltip: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
+                onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.chevron_right,
+                  size: 35,
+                  color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
                 ),
-              ],
-            ),
+                color: controlColor,
+                tooltip: _isDisplayingLastMonth ? null : _localizations.nextMonthTooltip,
+                onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            child: FocusableActionDetector(
-              shortcuts: _shortcutMap,
-              actions: _actionMap,
-              focusNode: _dayGridFocus,
-              onFocusChange: _handleGridFocusChange,
-              child: _FocusedDate(
-                date: _dayGridFocus.hasFocus ? _focusedDay : null,
-                child: PageView.builder(
-                  key: _pageViewKey,
-                  controller: _pageController,
-                  itemBuilder: _buildItems,
-                  itemCount: DateUtils.monthDelta(widget.config.firstDate!, widget.config.lastDate!) + 1,
-                  onPageChanged: _handleMonthPageChanged,
-                ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Expanded(
+          child: FocusableActionDetector(
+            shortcuts: _shortcutMap,
+            actions: _actionMap,
+            focusNode: _dayGridFocus,
+            onFocusChange: _handleGridFocusChange,
+            child: _FocusedDate(
+              date: _dayGridFocus.hasFocus ? _focusedDay : null,
+              child: PageView.builder(
+                controller: _pageController,
+                itemBuilder: _buildItems,
+                itemCount: DateUtils.monthDelta(widget.config.firstDate!, widget.config.lastDate!) + 1,
+                onPageChanged: _handleMonthPageChanged,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
+/*
+
+ 
+
+
+
+               GestureDetector(
+              onHorizontalDragUpdate: (details) {
+                if (details.delta.dx > 1 || details.delta.dx == 0) {
+                  setState(() {
+                    test = Colors.green;
+                  });
+                  print(test.value);
+                } else if (details.delta.dx < 1) {
+                  test = Colors.amber;
+                  print("Donev ${details.delta.dx}");
+                  setState(() {});
+                }
+              },
+              child: Container(
+                height: 150,
+                width: 150,
+                color: test,
+                alignment: Alignment.center,
+                child: Text("$test"),
+              ),
+            ),
+    
+    */ 

@@ -58,20 +58,21 @@ class _DatePickerModeToggleButtonState extends State<_DatePickerModeToggleButton
         excludeSemantics: true,
         button: true,
         child: SizedBox(
-          width: 250,
+          width: 280,
           height: (widget.config.controlsHeight ?? _subHeaderHeight),
           child: InkWell(
             onTap: widget.config.disableModePicker == true ? null : widget.onTitlePressed,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
                   widget.title,
                   overflow: TextOverflow.ellipsis,
                   style: widget.config.monthNameTextStyle ??
                       const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
                       ),
                 ),
               ],

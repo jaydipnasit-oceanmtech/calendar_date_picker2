@@ -96,8 +96,8 @@ class _YearPickerState extends State<YearPicker> {
             child: Text(
               year.toString(),
               style: (isSelected
-                  ? widget.config.selectedYearTextStyle ?? const TextStyle(color: Colors.white)
-                  : widget.config.notSelectedYearTextStyle ?? const TextStyle(color: Colors.black)),
+                  ? widget.config.selectedYearTextStyle ?? const TextStyle(color: Colors.white, fontSize: 20)
+                  : widget.config.notSelectedYearTextStyle ?? const TextStyle(color: Colors.black, fontSize: 20)),
             ),
           ),
         ),

@@ -60,15 +60,12 @@ class _DayPickerState extends State<_DayPicker> {
     assert(firstDayOfWeek >= 0 && firstDayOfWeek <= 6, 'firstDayOfWeek must between 0 and 6');
     for (int i = firstDayOfWeek; true; i = (i + 1) % 7) {
       final String weekday = weekdays[i];
-      result.add(ExcludeSemantics(
-        child: Center(
-          child: Text(
-            weekday,
-            style: widget.config.weekNameTextStyle ??
-                TextStyle(
-                  color: widget.config.themeColor ?? defaultTextColor,
-                ),
-          ),
+      result.add(Container(
+        alignment: Alignment.center,
+        child: Text(
+          weekday,
+          style: widget.config.weekNameTextStyle ??
+              TextStyle(color: widget.config.themeColor ?? defaultTextColor, fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ));
       if (i == (firstDayOfWeek - 1) % 7) break;
@@ -125,7 +122,8 @@ class _DayPickerState extends State<_DayPicker> {
         }
         var customDayTextStyle = isSelectedDay
             ? widget.config.selectedDataTextStyle
-            : widget.config.notSelectedDataTextStyle ?? const TextStyle(color: Colors.black);
+            : widget.config.notSelectedDataTextStyle ??
+                const TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500);
 
         final isFullySelectedRangePicker =
             widget.config.calendarType == CalendarDatePicker2Type.range && widget.selectedDates.length == 2;
@@ -274,7 +272,7 @@ class _DayPickerGridDelegate extends SliverGridDelegate {
     final double tileWidth = constraints.crossAxisExtent / columnCount;
     final double tileHeight = math.min(
       _dayPickerRowHeight,
-      constraints.viewportMainAxisExtent / (_maxDayPickerRowCount + 1),
+      constraints.viewportMainAxisExtent / (_maxDayPickerRowCount + 0),
     );
     return SliverGridRegularTileLayout(
       childCrossAxisExtent: tileWidth,

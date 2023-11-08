@@ -76,6 +76,8 @@ class CalendarDatePicker2Config {
     this.cancleButtonSize,
     this.applyButtonSize,
     this.spaceBetweenCalenderAndButtons,
+    this.spaceBetweenButtons,
+    this.calenderHeight,
     // bool
 
     this.disableModePicker,
@@ -132,6 +134,8 @@ class CalendarDatePicker2Config {
   Size? cancleButtonSize;
   Size? applyButtonSize;
   double? spaceBetweenCalenderAndButtons;
+  double? spaceBetweenButtons;
+  double? calenderHeight;
 
   // bool
 

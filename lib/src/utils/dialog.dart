@@ -25,20 +25,13 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
     backgroundColor: Colors.transparent,
     content: Container(
       decoration: BoxDecoration(
-        color: dialogBackgroundColor ?? Colors.white,
+        color: dialogBackgroundColor ?? Colors.red,
         borderRadius: borderRadius ?? BorderRadius.circular(15),
       ),
-      width: dialogSize.width,
-      height: dialogSize.height,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CalendarDatePicker2WithActionButtons(
-            value: value,
-            config: config,
-          ),
-        ],
-      ),
+      child: Container(
+          height: dialogSize.height,
+          width: dialogSize.width,
+          child: SingleChildScrollView(child: CalendarDatePicker2WithActionButtons(value: value, config: config))),
     ),
   );
 
