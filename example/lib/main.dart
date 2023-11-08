@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   List<DateTime?> _rangeDatePickerValueWithDefaultValue = [
     DateTime.now(),
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
+    // DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ];
 
   List<DateTime?> dateTime = [DateTime.now()];
@@ -70,45 +70,41 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            final values = await showCalendarDatePicker2Dialog(
-              context: context,
-              config: config,
-              dialogSize: const Size(400, 450),
-              borderRadius: BorderRadius.circular(15),
-              value: _dialogCalendarPickerValue,
-              dialogBackgroundColor: Colors.white,
-            );
-            if (values != null) {
-              dateTime = values;
-              setState(() {});
-            }
-          },
-          child: Text('$dateTime'),
-        ),
+      body: Column(
+        children: [
+          // rangePicker(),
+          dialog(context),
+        ],
       ),
-      // body: Container(
-      //   height: 200,
-      //   color: Colors.amber,
-      //   child: PageView(
-      //     pageSnapping: true,
-      //     children: [
-      //       Text("data"),
-      //       Text("data1"),
-      //     ],
-      //   ),
-      // ),
     );
   }
 
-  Widget buildDefaultRangeDatePickerWithValue() {
+  ElevatedButton dialog(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        final values = await showCalendarDatePicker2Dialog(
+          context: context,
+          config: config,
+          dialogSize: const Size(400, 360),
+          borderRadius: BorderRadius.circular(15),
+          value: _dialogCalendarPickerValue,
+          dialogBackgroundColor: Colors.white,
+        );
+        if (values != null) {
+          dateTime = values;
+          setState(() {});
+        }
+      },
+      child: Text('$dateTime'),
+    );
+  }
+
+  Widget rangePicker() {
     final config = CalendarDatePicker2Config(
       calendarType: CalendarDatePicker2Type.single,
       themeColor: Colors.cyan.shade900,
     );
-    return CalendarDatePicker2(
+    return CalendarDatePicker2WithActionButtons(
       config: config,
       value: _rangeDatePickerValueWithDefaultValue,
       onValueChanged: (dates) => setState(() => _rangeDatePickerValueWithDefaultValue = dates),

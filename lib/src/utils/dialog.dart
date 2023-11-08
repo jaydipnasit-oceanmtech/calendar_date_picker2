@@ -16,10 +16,24 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
   String? barrierLabel,
   TransitionBuilder? builder,
   EdgeInsets? insetPadding,
-  double? hight,
-  double? width,
 }) {
-  var dialog = CalendarDatePicker2WithActionButtons(value: value, config: config);
+  var dialog = AlertDialog(
+    alignment: Alignment.center,
+    actionsOverflowButtonSpacing: 0,
+    contentPadding: EdgeInsets.zero,
+    insetPadding: insetPadding ?? const EdgeInsets.all(10),
+    backgroundColor: Colors.transparent,
+    content: Container(
+      decoration: BoxDecoration(
+        color: dialogBackgroundColor ?? Colors.white,
+        borderRadius: borderRadius ?? BorderRadius.circular(15),
+      ),
+      width: dialogSize.width,
+      height: dialogSize.height,
+      child: CalendarDatePicker2WithActionButtons(value: value, config: config),
+     
+    ),
+  );
 
   return showDialog<List<DateTime?>>(
     context: context,
@@ -34,3 +48,10 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
     useSafeArea: useSafeArea,
   );
 }
+
+
+/*
+
+
+
+*/
