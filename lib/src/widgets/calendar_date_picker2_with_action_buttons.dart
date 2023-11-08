@@ -77,8 +77,8 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(child: buildCancelButton(Theme.of(context).colorScheme)),
-              const SizedBox(
-                width: 20,
+               SizedBox(
+                width: widget.config.spaceBetweenButtons ?? 20,
               ),
               Expanded(child: buildOkButton(Theme.of(context).colorScheme)),
             ],

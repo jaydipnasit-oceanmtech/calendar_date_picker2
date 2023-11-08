@@ -21,7 +21,7 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
     alignment: Alignment.center,
     actionsOverflowButtonSpacing: 0,
     contentPadding: EdgeInsets.zero,
-    insetPadding: insetPadding ?? const EdgeInsets.all(10),
+    insetPadding: insetPadding ?? const EdgeInsets.all(20),
     backgroundColor: Colors.transparent,
     content: Container(
       decoration: BoxDecoration(
@@ -31,7 +31,6 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
       width: dialogSize.width,
       height: dialogSize.height,
       child: CalendarDatePicker2WithActionButtons(value: value, config: config),
-     
     ),
   );
 

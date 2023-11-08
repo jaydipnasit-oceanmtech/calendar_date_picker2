@@ -50,6 +50,7 @@ class CalendarDatePicker2Config {
     this.selectedYearBoxColor,
     this.applyButtonColor,
     this.cancleButtonColor,
+    this.dividerColor,
 
     //  styles
 
@@ -108,6 +109,7 @@ class CalendarDatePicker2Config {
   Color? selectedYearBoxColor;
   Color? applyButtonColor;
   Color? cancleButtonColor;
+  Color? dividerColor;
 
   // style
 

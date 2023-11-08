@@ -291,11 +291,15 @@ class _CalendarViewState extends State<_CalendarView> {
             onFocusChange: _handleGridFocusChange,
             child: _FocusedDate(
               date: _dayGridFocus.hasFocus ? _focusedDay : null,
-              child: PageView.builder(
-                controller: _pageController,
-                itemBuilder: _buildItems,
-                itemCount: DateUtils.monthDelta(widget.config.firstDate!, widget.config.lastDate!) + 1,
-                onPageChanged: _handleMonthPageChanged,
+              child: SizedBox(
+                height: 200,
+                width: 550,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemBuilder: _buildItems,
+                  itemCount: DateUtils.monthDelta(widget.config.firstDate!, widget.config.lastDate!) + 1,
+                  onPageChanged: _handleMonthPageChanged,
+                ),
               ),
             ),
           ),
