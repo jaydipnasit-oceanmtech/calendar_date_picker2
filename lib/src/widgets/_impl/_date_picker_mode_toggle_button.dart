@@ -58,7 +58,7 @@ class _DatePickerModeToggleButtonState extends State<_DatePickerModeToggleButton
         excludeSemantics: true,
         button: true,
         child: SizedBox(
-          width: 280,
+          width: 250,
           height: (widget.config.controlsHeight ?? _subHeaderHeight),
           child: InkWell(
             onTap: widget.config.disableModePicker == true ? null : widget.onTitlePressed,
