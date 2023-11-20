@@ -1,5 +1,4 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -52,15 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   List<DateTime?> _rangeDatePickerValueWithDefaultValue = [
     DateTime.now(),
-    // DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ];
 
   List<DateTime?> dateTime = [DateTime.now()];
-
-  final config = CalendarDatePicker2Config(
-    calendarType: CalendarDatePicker2Type.single,
-    // displayOkCancleButon: false,
-  );
 
   Color test = Colors.red;
 
@@ -72,14 +65,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          // rangePicker(),
+          rangePicker(),
           dialog(context),
         ],
       ),
     );
   }
 
-  ElevatedButton dialog(BuildContext context) {
+  Widget dialog(BuildContext context) {
+    final config = CalendarDatePicker2Config(
+      calendarType: CalendarDatePicker2Type.single,
+      displaySingleButton: true,
+      firstDate: DateTime.now(),
+    );
     return ElevatedButton(
       onPressed: () async {
         final values = await showCalendarDatePicker2Dialog(
@@ -88,7 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
           dialogSize: const Size(400, 360),
           borderRadius: BorderRadius.circular(15),
           value: _dialogCalendarPickerValue,
-          dialogBackgroundColor: Colors.white,
         );
         if (values != null) {
           dateTime = values;
@@ -100,10 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget rangePicker() {
-    final config = CalendarDatePicker2Config(
-      calendarType: CalendarDatePicker2Type.single,
-      themeColor: Colors.cyan.shade900,
-    );
+    final config =
+        CalendarDatePicker2Config(calendarType: CalendarDatePicker2Type.range, cancleButtonTextColor: Colors.green);
     return CalendarDatePicker2WithActionButtons(
       config: config,
       value: _rangeDatePickerValueWithDefaultValue,

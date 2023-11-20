@@ -48,9 +48,12 @@ class CalendarDatePicker2Config {
     this.currentDayBoarderColor,
     this.selectedDateBoxColor,
     this.selectedYearBoxColor,
-    this.applyButtonColor,
-    this.cancleButtonColor,
+    this.applyButtonBgColor,
+    this.cancleButtonBgColor,
     this.dividerColor,
+    this.cancleButtonTextColor,
+    this.applyButtonTextColor,
+    this.currentDateBorderColor,
 
     //  styles
 
@@ -79,15 +82,21 @@ class CalendarDatePicker2Config {
     this.spaceBetweenCalenderAndButtons,
     this.spaceBetweenButtons,
     this.calenderHeight,
+    this.dateLeftRightPadding,
+    this.dateTopBottomPadding,
+    this.spaceBetweenYearAndCalender,
+    this.calendarHorizontalPadding,
+
     // bool
 
     this.disableModePicker,
-    this.displayOkCancleButon,
+    this.displaySingleButton,
 
     // widget
 
     this.applyButtonWidget,
     this.cancleButtonWidget,
+    this.singleButtonWidget,
   })  : firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1970)),
         lastDate = DateUtils.dateOnly(lastDate ?? DateTime(DateTime.now().year + 100)),
         currentDate = currentDate ?? DateUtils.dateOnly(DateTime.now()),
@@ -107,9 +116,12 @@ class CalendarDatePicker2Config {
   Color? currentDayBoarderColor;
   Color? selectedDateBoxColor;
   Color? selectedYearBoxColor;
-  Color? applyButtonColor;
-  Color? cancleButtonColor;
+  Color? applyButtonBgColor;
+  Color? cancleButtonBgColor;
   Color? dividerColor;
+  Color? cancleButtonTextColor;
+  Color? applyButtonTextColor;
+  Color? currentDateBorderColor;
 
   // style
 
@@ -138,14 +150,19 @@ class CalendarDatePicker2Config {
   double? spaceBetweenCalenderAndButtons;
   double? spaceBetweenButtons;
   double? calenderHeight;
+  double? dateLeftRightPadding;
+  double? dateTopBottomPadding;
+  double? spaceBetweenYearAndCalender;
+  double? calendarHorizontalPadding;
 
   // bool
 
   bool? disableModePicker;
-  bool? displayOkCancleButon;
+  bool? displaySingleButton;
 
   // Widget
 
   Widget? applyButtonWidget;
   Widget? cancleButtonWidget;
+  Widget? singleButtonWidget;
 }

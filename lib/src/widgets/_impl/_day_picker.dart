@@ -77,6 +77,7 @@ class _DayPickerState extends State<_DayPicker> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    const Color disabledDayColor = Colors.black54;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final TextStyle? headerStyle = textTheme.bodySmall?.apply(
       color: colorScheme.onSurface.withOpacity(0.60),
@@ -113,10 +114,12 @@ class _DayPickerState extends State<_DayPicker> {
             color: widget.config.themeColor ?? widget.config.selectedDateBoxColor ?? defaultTextColor,
             shape: BoxShape.circle,
           );
+        } else if (isDisabled) {
+          dayColor = disabledDayColor;
         } else if (isToday) {
           dayColor = widget.config.themeColor ?? defaultTextColor;
           decoration = BoxDecoration(
-            border: Border.all(color: dayColor),
+            border: Border.all(color: widget.config.currentDateBorderColor ?? dayColor),
             shape: BoxShape.circle,
           );
         }
@@ -124,6 +127,13 @@ class _DayPickerState extends State<_DayPicker> {
             ? widget.config.selectedDataTextStyle
             : widget.config.notSelectedDataTextStyle ??
                 const TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500);
+
+        if (isDisabled) {
+          customDayTextStyle = customDayTextStyle?.copyWith(
+            color: disabledDayColor,
+            fontWeight: FontWeight.normal,
+          );
+        }
 
         final isFullySelectedRangePicker =
             widget.config.calendarType == CalendarDatePicker2Type.range && widget.selectedDates.length == 2;
@@ -221,13 +231,13 @@ class _DayPickerState extends State<_DayPicker> {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: _monthPickerHorizontalPadding,
+      padding:  EdgeInsets.symmetric(
+        horizontal: widget.config.calendarHorizontalPadding ?? _monthPickerHorizontalPadding,
       ),
       child: GridView.custom(
         padding: EdgeInsets.zero,
         physics: const ClampingScrollPhysics(),
-        gridDelegate: _dayPickerGridDelegate,
+        gridDelegate: _DayPickerGridDelegate(config: widget.config),
         childrenDelegate: SliverChildListDelegate(
           dayItems,
           addRepaintBoundaries: false,
@@ -264,8 +274,9 @@ class _DayPickerState extends State<_DayPicker> {
 }
 
 class _DayPickerGridDelegate extends SliverGridDelegate {
-  const _DayPickerGridDelegate();
+  _DayPickerGridDelegate({required this.config});
 
+  final CalendarDatePicker2Config config;
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
     const int columnCount = DateTime.daysPerWeek;
@@ -278,8 +289,8 @@ class _DayPickerGridDelegate extends SliverGridDelegate {
       childCrossAxisExtent: tileWidth,
       childMainAxisExtent: tileHeight,
       crossAxisCount: columnCount,
-      crossAxisStride: tileWidth,
-      mainAxisStride: tileHeight,
+      crossAxisStride: config.dateLeftRightPadding ?? tileWidth,
+      mainAxisStride: config.dateTopBottomPadding ?? tileHeight,
       reverseCrossAxis: axisDirectionIsReversed(constraints.crossAxisDirection),
     );
   }
@@ -287,5 +298,3 @@ class _DayPickerGridDelegate extends SliverGridDelegate {
   @override
   bool shouldRelayout(_DayPickerGridDelegate oldDelegate) => false;
 }
-
-const _DayPickerGridDelegate _dayPickerGridDelegate = _DayPickerGridDelegate();

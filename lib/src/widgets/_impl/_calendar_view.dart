@@ -27,7 +27,6 @@ class _CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<_CalendarView> {
-  // final GlobalKey _pageViewKey = GlobalKey();
   late DateTime _currentMonth;
   late PageController _pageController;
   late MaterialLocalizations _localizations;
@@ -247,14 +246,12 @@ class _CalendarViewState extends State<_CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    final Color controlColor = Theme.of(context).colorScheme.onSurface.withOpacity(0.60);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         SizedBox(
           height: (widget.config.controlsHeight ?? _subHeaderHeight),
           child: Row(
-            // mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
@@ -263,7 +260,6 @@ class _CalendarViewState extends State<_CalendarView> {
                   size: 35,
                   color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
                 ),
-                color: controlColor,
                 tooltip: _isDisplayingFirstMonth ? null : _localizations.previousMonthTooltip,
                 onPressed: _isDisplayingFirstMonth ? null : _handlePreviousMonth,
               ),
@@ -273,15 +269,14 @@ class _CalendarViewState extends State<_CalendarView> {
                   size: 35,
                   color: widget.config.themeColor ?? widget.config.arrowColor ?? const Color.fromRGBO(183, 84, 0, 1),
                 ),
-                color: controlColor,
                 tooltip: _isDisplayingLastMonth ? null : _localizations.nextMonthTooltip,
                 onPressed: _isDisplayingLastMonth ? null : _handleNextMonth,
               ),
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
+         SizedBox(
+          height: widget.config.spaceBetweenYearAndCalender ?? 10,
         ),
         Expanded(
           child: FocusableActionDetector(
@@ -308,32 +303,3 @@ class _CalendarViewState extends State<_CalendarView> {
     );
   }
 }
-/*
-
- 
-
-
-
-               GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                if (details.delta.dx > 1 || details.delta.dx == 0) {
-                  setState(() {
-                    test = Colors.green;
-                  });
-                  print(test.value);
-                } else if (details.delta.dx < 1) {
-                  test = Colors.amber;
-                  print("Donev ${details.delta.dx}");
-                  setState(() {});
-                }
-              },
-              child: Container(
-                height: 150,
-                width: 150,
-                color: test,
-                alignment: Alignment.center,
-                child: Text("$test"),
-              ),
-            ),
-    
-    */ 

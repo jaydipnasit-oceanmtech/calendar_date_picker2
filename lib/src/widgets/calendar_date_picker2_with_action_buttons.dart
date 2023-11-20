@@ -73,24 +73,31 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
         SizedBox(height: widget.config.spaceBetweenCalenderAndButtons ?? 5),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: buildCancelButton(Theme.of(context).colorScheme)),
-               SizedBox(
-                width: widget.config.spaceBetweenButtons ?? 20,
-              ),
-              Expanded(child: buildOkButton(Theme.of(context).colorScheme)),
-            ],
+          child: InkWell(
+            onTap: () => setState(() {
+              values = editCache;
+              widget.onValueChanged?.call(values);
+              widget.onOkTapped?.call();
+              Navigator.pop(context, values);
+            }),
+            child: widget.config.singleButtonWidget ??
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: buildCancelButton()),
+                    SizedBox(
+                      width: widget.config.spaceBetweenButtons ?? 20,
+                    ),
+                    Expanded(child: buildOkButton()),
+                  ],
+                ),
           ),
         ),
       ],
     );
   }
 
-  Widget buildCancelButton(
-    ColorScheme colorScheme,
-  ) {
+  Widget buildCancelButton() {
     MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(5),
@@ -102,18 +109,17 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
       child: widget.config.cancleButtonWidget ??
           Container(
             height: widget.config.cancleButtonSize?.height ?? 50,
-            // width: widget.config.cancleButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: widget.config.themeColor?.withOpacity(0.5) ??
-                    widget.config.cancleButtonColor?.withOpacity(0.5) ??
+                    widget.config.cancleButtonBgColor?.withOpacity(0.5) ??
                     const Color.fromRGBO(255, 231, 210, 1),
                 borderRadius: BorderRadius.circular(10)),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Text(
               localizations.cancelButtonLabel.toUpperCase(),
-              style: const TextStyle(
-                color: Color.fromRGBO(183, 84, 0, 1),
+              style: TextStyle(
+                color: widget.config.cancleButtonTextColor ?? const Color.fromRGBO(183, 84, 0, 1),
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
               ),
@@ -122,9 +128,7 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
     );
   }
 
-  Widget buildOkButton(
-    ColorScheme colorScheme,
-  ) {
+  Widget buildOkButton() {
     return InkWell(
       borderRadius: BorderRadius.circular(5),
       onTap: () => setState(() {
@@ -137,16 +141,16 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
           Container(
             alignment: Alignment.center,
             height: widget.config.applyButtonSize?.height ?? 50,
-            // width: widget.config.applyButtonSize?.width ?? MediaQuery.of(context).size.width / 2.6,
             decoration: BoxDecoration(
-                color:
-                    widget.config.themeColor ?? widget.config.applyButtonColor ?? const Color.fromRGBO(183, 84, 0, 1),
-                borderRadius: BorderRadius.circular(10)),
+              color:
+                  widget.config.themeColor ?? widget.config.applyButtonBgColor ?? const Color.fromRGBO(183, 84, 0, 1),
+              borderRadius: BorderRadius.circular(10),
+            ),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: const Text(
+            child: Text(
               "Apply",
               style: TextStyle(
-                color: Colors.white,
+                color: widget.config.applyButtonTextColor ?? Colors.white,
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
               ),
