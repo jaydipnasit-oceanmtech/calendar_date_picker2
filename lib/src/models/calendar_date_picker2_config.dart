@@ -64,6 +64,8 @@ class CalendarDatePicker2Config {
     this.notSelectedYearTextStyle,
     this.selectedYearTextStyle,
     this.monthNameTextStyle,
+    this.cancleButtonTextStyle,
+    this.applyButtonTextStyle,
 
     // classes
 
@@ -132,6 +134,8 @@ class CalendarDatePicker2Config {
   TextStyle? notSelectedYearTextStyle;
   TextStyle? selectedYearTextStyle;
   TextStyle? monthNameTextStyle;
+  TextStyle? cancleButtonTextStyle;
+  TextStyle? applyButtonTextStyle;
 
   // classes
 
