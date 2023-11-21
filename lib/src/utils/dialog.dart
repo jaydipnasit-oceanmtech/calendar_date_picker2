@@ -5,6 +5,7 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
   required BuildContext context,
   required CalendarDatePicker2Config config,
   required Size dialogSize,
+  required EdgeInsets padding,
   List<DateTime?> value = const [],
   BorderRadius? borderRadius,
   bool useRootNavigator = true,
@@ -28,8 +29,8 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
         color: dialogBackgroundColor ?? Colors.white,
         borderRadius: borderRadius ?? BorderRadius.circular(15),
       ),
+      padding: padding,
       width: dialogSize.width,
-      height: dialogSize.height,
       child: CalendarDatePicker2WithActionButtons(value: value, config: config),
     ),
   );

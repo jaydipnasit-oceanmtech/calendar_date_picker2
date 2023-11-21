@@ -84,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           context: context,
           config: config,
           dialogSize: const Size(400, 360),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           borderRadius: BorderRadius.circular(15),
           value: _dialogCalendarPickerValue,
         );
