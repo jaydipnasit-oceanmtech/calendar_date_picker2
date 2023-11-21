@@ -72,7 +72,7 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
         ),
         SizedBox(height: widget.config.spaceBetweenCalenderAndButtons ?? 5),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: InkWell(
             onTap: () => setState(() {
               values = editCache;
