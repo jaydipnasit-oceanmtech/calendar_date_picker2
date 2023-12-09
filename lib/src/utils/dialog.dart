@@ -17,6 +17,7 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
   String? barrierLabel,
   TransitionBuilder? builder,
   EdgeInsets? insetPadding,
+  bool? isShowButton,
 }) {
   var dialog = AlertDialog(
     alignment: Alignment.center,
@@ -31,7 +32,7 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
       ),
       padding: padding,
       width: dialogSize.width,
-      child: CalendarDatePicker2WithActionButtons(value: value, config: config),
+      child: CalendarDatePicker2WithActionButtons(value: value, config: config, isShowButton: isShowButton),
     ),
   );
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class CalendarDatePicker2WithActionButtons extends StatefulWidget {
   const CalendarDatePicker2WithActionButtons({
+    this.isShowButton,
     required this.value,
     required this.config,
     this.onValueChanged,
@@ -18,6 +19,7 @@ class CalendarDatePicker2WithActionButtons extends StatefulWidget {
   final CalendarDatePicker2Config config;
   final Function? onCancelTapped;
   final Function? onOkTapped;
+  final bool? isShowButton;
 
   @override
   State<CalendarDatePicker2WithActionButtons> createState() => CalendarDatePicker2WithActionButtonsState();
@@ -26,12 +28,15 @@ class CalendarDatePicker2WithActionButtons extends StatefulWidget {
 class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker2WithActionButtons> {
   List<DateTime?> values = [];
   List<DateTime?> editCache = [];
+  bool isShowButton = true;
 
   @override
   void initState() {
     values = widget.value;
     editCache = widget.value;
     super.initState();
+
+    isShowButton = widget.isShowButton ?? true;
   }
 
   @override
@@ -67,32 +72,47 @@ class CalendarDatePicker2WithActionButtonsState extends State<CalendarDatePicker
         CalendarDatePicker2(
           value: editCache,
           config: widget.config,
-          onValueChanged: (values) => editCache = values,
+          onValueChanged: (values) {
+            if (isShowButton) {
+              setState(() {
+                editCache = values;
+              });
+            } else {
+              setState(() {
+                values = values;
+                widget.onValueChanged?.call(values);
+                widget.onOkTapped?.call();
+                Navigator.pop(context, values);
+              });
+            }
+          },
           onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
         ),
         SizedBox(height: widget.config.spaceBetweenCalenderAndButtons ?? 5),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: InkWell(
-            onTap: () => setState(() {
-              values = editCache;
-              widget.onValueChanged?.call(values);
-              widget.onOkTapped?.call();
-              Navigator.pop(context, values);
-            }),
-            child: widget.config.singleButtonWidget ??
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: buildCancelButton()),
-                    SizedBox(
-                      width: widget.config.spaceBetweenButtons ?? 20,
-                    ),
-                    Expanded(child: buildOkButton()),
-                  ],
+        isShowButton
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: InkWell(
+                  onTap: () => setState(() {
+                    values = editCache;
+                    widget.onValueChanged?.call(values);
+                    widget.onOkTapped?.call();
+                    Navigator.pop(context, values);
+                  }),
+                  child: widget.config.singleButtonWidget ??
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(child: buildCancelButton()),
+                          SizedBox(
+                            width: widget.config.spaceBetweenButtons ?? 20,
+                          ),
+                          Expanded(child: buildOkButton()),
+                        ],
+                      ),
                 ),
-          ),
-        ),
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }

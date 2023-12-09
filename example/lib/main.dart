@@ -83,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final values = await showCalendarDatePicker2Dialog(
           context: context,
           config: config,
+          isShowButton: false,
           dialogSize: const Size(400, 360),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           borderRadius: BorderRadius.circular(15),
