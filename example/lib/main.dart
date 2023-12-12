@@ -91,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         if (values != null) {
           dateTime = values;
+          _dialogCalendarPickerValue[0] = values[0];
           setState(() {});
         }
       },
